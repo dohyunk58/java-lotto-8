@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,5 +48,36 @@ class LottoTest {
                 () -> new Lotto(numbersWithSeven));
     }
 
+    @DisplayName("Lotto가 특정 번호를 포함하고 있는지 여부를 반환한다.")
+    @Test
+    void containsNumber() {
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6);
+        Lotto lotto = new Lotto(numbers);
 
+        assertThat(lotto.contains(3)).isTrue();   // 포함된 경우
+        assertThat(lotto.contains(7)).isFalse();  // 포함되지 않은 경우
+    }
+
+    @DisplayName("Lotto가 정답 번호와 일치하는 숫자의 개수를 반환한다.")
+    @Test
+    void calculateMatchCount() {
+        List<Integer> numbersOfLotto = List.of(1, 2, 3, 4, 5, 6);
+        Lotto lotto = new Lotto(numbersOfLotto);
+
+        List<Integer> numbersMatchSix = List.of(1, 2, 3, 4, 5, 6);
+        List<Integer> numbersMatchFive = List.of(1, 2, 3, 4, 5, 7);
+        List<Integer> numbersMatchFour = List.of(1, 2, 3, 4, 7, 8);
+        List<Integer> numbersMatchThree = List.of(1, 2, 3, 7, 8, 9);
+        List<Integer> numbersMatchTwo = List.of(1, 2, 7, 8, 9, 10);
+        List<Integer> numbersMatchOne = List.of(1, 7, 8, 9, 10, 11);
+        List<Integer> numbersMatchZero = List.of(7, 8, 9, 10, 11, 12);
+
+        assertThat(lotto.countMatchingNumbers(numbersMatchSix)).isEqualTo(6);
+        assertThat(lotto.countMatchingNumbers(numbersMatchFive)).isEqualTo(5);
+        assertThat(lotto.countMatchingNumbers(numbersMatchFour)).isEqualTo(4);
+        assertThat(lotto.countMatchingNumbers(numbersMatchThree)).isEqualTo(3);
+        assertThat(lotto.countMatchingNumbers(numbersMatchTwo)).isEqualTo(2);
+        assertThat(lotto.countMatchingNumbers(numbersMatchOne)).isEqualTo(1);
+        assertThat(lotto.countMatchingNumbers(numbersMatchZero)).isEqualTo(0);
+    }
 }

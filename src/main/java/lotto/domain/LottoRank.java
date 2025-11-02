@@ -37,4 +37,8 @@ public enum LottoRank {
 
         return MISS;
     }
+
+    public long getPrizeMoney() {
+        return prizeMoney;
+    }
 }

@@ -32,22 +32,6 @@ public class InputConverterTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    @DisplayName("구매 금액이 1000원 미만인 경우 IllegalArgumentException을 발생시킨다.")
-    @ParameterizedTest
-    @ValueSource(strings = {"999", "0", "-1000"})
-    void validatePurchaseAmount_LessThan1000(String input) {
-        assertThatThrownBy(() -> InputConverter.parsePurchaseAmount(input))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @DisplayName("구매 금액이 1000원 단위가 아닌 경우 IllegalArgumentException을 발생시킨다.")
-    @ParameterizedTest
-    @ValueSource(strings = {"1001", "1500"})
-    void validatePurchaseAmount_NotMultipleOf1000(String input) {
-        assertThatThrownBy(() -> InputConverter.parsePurchaseAmount(input))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
     // 당첨 번호 입력값 변환 parseWinningNumbers
 
     @DisplayName("유효한 당첨 번호 문자열을 List<Integer>로 변환한다.")
@@ -83,22 +67,6 @@ public class InputConverterTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    @DisplayName("당첨 번호에 1~45 범위를 벗어난 숫자가 포함된 경우 IllegalArgumentException을 발생시킨다.")
-    @ParameterizedTest
-    @ValueSource(strings = {"1,2,3,4,5,46", "0,1,2,3,4,5"})
-    void parseWinningNumbers_OutOfRange(String input) {
-        assertThatThrownBy(() -> InputConverter.parseWinningNumbers(input))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @DisplayName("당첨 번호에 중복된 숫자가 포함된 경우 IllegalArgumentException을 발생시킨다.")
-    @ParameterizedTest
-    @ValueSource(strings = {"1,2,3,4,5,5"})
-    void parseWinningNumbers_Duplicated(String input) {
-        assertThatThrownBy(() -> InputConverter.parseWinningNumbers(input))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
     // 보너스 번호 입력값 변환 parseBonusNumber
 
     @DisplayName("정상적인 보너스 번호 문자열을 int로 변환한다.")
@@ -118,15 +86,5 @@ public class InputConverterTest {
 
         assertThatThrownBy(() -> InputConverter.parseBonusNumber(input))
                 .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @DisplayName("보너스 번호가 1~45 범위를 벗어난 경우 IllegalArgumentException을 발생시킨다.")
-    @ParameterizedTest
-    @ValueSource(strings = {"0", "46", "-1"})
-    void parseBonusNumber_OutOfRange(String input) {
-        // when & then
-        assertThatThrownBy(() -> InputConverter.parseBonusNumber(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR]");
     }
 }

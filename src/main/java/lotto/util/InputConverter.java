@@ -79,9 +79,7 @@ public class InputConverter {
 
     private static void validateNumberRange(List<Integer> numbers) {
         for (int number : numbers) {
-            if (number < MIN_LOTTO_NUMBER || number > MAX_LOTTO_NUMBER) {
-                throw new IllegalArgumentException(ERROR_PREFIX + "로또 번호는 1부터 45 사이의 숫자여야 합니다.");
-            }
+            validateNumberRange(number);
         }
     }
 
@@ -93,17 +91,22 @@ public class InputConverter {
     }
 
     public static Integer parseBonusNumber(String bonusNumberInput) {
+        int bonusNumber;
+
         try {
-            int bonusNumber;
             bonusNumber = Integer.parseInt(bonusNumberInput);
-
-            if (bonusNumber < MIN_LOTTO_NUMBER || bonusNumber > MAX_LOTTO_NUMBER) {
-                throw new IllegalArgumentException(ERROR_PREFIX + "보너스 번호는 1부터 45 사이의 숫자여야 합니다.");
-            }
-
-            return bonusNumber;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(ERROR_PREFIX + "보너스 번호는 유효한 숫자여야 합니다.");
+        }
+
+        validateNumberRange(bonusNumber);
+
+        return bonusNumber;
+    }
+
+    private static void validateNumberRange(int number) {
+        if (number < MIN_LOTTO_NUMBER || number > MAX_LOTTO_NUMBER) {
+            throw new IllegalArgumentException(ERROR_PREFIX + "로또 번호는 1부터 45 사이의 숫자여야 합니다.");
         }
     }
 }

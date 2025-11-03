@@ -7,7 +7,10 @@ public class Lotto {
 
     public Lotto(List<Integer> numbers) {
         validate(numbers);
-        this.numbers = List.copyOf(numbers);
+
+        this.numbers = numbers.stream()
+                .sorted()
+                .toList(); // 수정 불가능한 리스트를 반환함
     }
 
     private void validate(List<Integer> numbers) {

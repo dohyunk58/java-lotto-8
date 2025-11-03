@@ -1,5 +1,6 @@
 package lotto.domain;
 
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -43,4 +44,7 @@ public class LottoResult {
         return Math.round(rate*10.0) / 10.0; // 둘째 자리에서 반올림(ex. 33.33 -> 333.3 -> 333 -> 33.3)
     }
 
+    public Map<LottoRank, Integer> getResults() {
+        return Collections.unmodifiableMap(counts);
+    }
 }

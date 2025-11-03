@@ -48,7 +48,7 @@ public class InputConverterTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    // 당첨 번호 변환 parseWinningNumbers
+    // 당첨 번호 입력값 변환 parseWinningNumbers
 
     @DisplayName("유효한 당첨 번호 문자열을 List<Integer>로 변환한다.")
     @Test
@@ -97,5 +97,36 @@ public class InputConverterTest {
     void parseWinningNumbers_Duplicated(String input) {
         assertThatThrownBy(() -> InputConverter.parseWinningNumbers(input))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    // 보너스 번호 입력값 변환 parseBonusNumber
+
+    @DisplayName("정상적인 보너스 번호 문자열을 int로 변환한다.")
+    @Test
+    void parseBonusNumber_Success() {
+        String input = "7";
+
+        int result = InputConverter.parseBonusNumber(input);
+
+        assertThat(result).isEqualTo(7);
+    }
+
+    @DisplayName("보너스 번호가 정수형이 아닌 경우 IllegalArgumentException을 발생시킨다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"a", "1.5", "", " ", "7 ", " 7"})
+    void parseBonusNumber_NotInteger(String input) {
+
+        assertThatThrownBy(() -> InputConverter.parseBonusNumber(input))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("보너스 번호가 1~45 범위를 벗어난 경우 IllegalArgumentException을 발생시킨다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"0", "46", "-1"})
+    void parseBonusNumber_OutOfRange(String input) {
+        // when & then
+        assertThatThrownBy(() -> InputConverter.parseBonusNumber(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("[ERROR]");
     }
 }

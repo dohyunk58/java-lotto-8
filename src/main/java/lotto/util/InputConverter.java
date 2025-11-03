@@ -1,6 +1,6 @@
 package lotto.util;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import static lotto.domain.LottoConfig.*;
 
@@ -25,7 +25,7 @@ public class InputConverter {
     }
 
     private static void validateStringFormat(String input) {
-        if (input == null || input.trim().isBlank()) {
+        if (input == null || input.isBlank()) {
             throw new IllegalArgumentException(ERROR_PREFIX + "당첨 번호는 공백이 될 수 없습니다.");
         }
         if (input.endsWith(DELIMITER)) {
@@ -40,15 +40,13 @@ public class InputConverter {
     }
 
     private static List<Integer> parseNumbers(String[] parts) {
-        List<Integer> numbers = new ArrayList<>();
         try {
-            for (String part : parts) {
-                numbers.add(Integer.parseInt(part));
-            }
+            return Arrays.stream(parts)
+                    .map(Integer::parseInt)
+                    .toList();
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(ERROR_PREFIX + "당첨 번호는 유효한 숫자여야 합니다.");
         }
-        return numbers;
     }
 
     public static int parseBonusNumber(String bonusNumberInput) {

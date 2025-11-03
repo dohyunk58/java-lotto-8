@@ -27,6 +27,28 @@ class LottoTest {
 
     // 추가 작성한 테스트 코드
 
+    @DisplayName("로또 번호에 1~45 범위를 벗어난 숫자가 있으면 예외가 발생한다.")
+    @Test
+    void validateRange() {
+        List<Integer> outOfRangeList1 = List.of(1, 2, 3, 4, 5, 46);
+        List<Integer> outOfRangeList2 = List.of(0, 1, 2, 3, 4, 5);
+
+        assertThatThrownBy(() -> new Lotto(outOfRangeList1))
+                .isInstanceOf(IllegalArgumentException.class);
+
+        assertThatThrownBy(() -> new Lotto(outOfRangeList2))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("로또 번호에 중복된 숫자가 있으면 예외가 발생한다.")
+    @Test
+    void validateDuplicate() {
+        List<Integer> duplicatedList = List.of(1, 2, 3, 4, 5, 5);
+
+        assertThatThrownBy(() -> new Lotto(duplicatedList))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
     @DisplayName("Lotto에 6개 숫자가 주어지면 예외가 발생하지 않는다.")
     @Test
     void validateNormalLotto() {

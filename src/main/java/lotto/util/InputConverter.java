@@ -5,7 +5,6 @@ import java.util.List;
 
 public class InputConverter {
 
-    private static final int LOTTO_PRICE = 1000;
     private static final String ERROR_PREFIX = "[ERROR] ";
     private static final int LOTTO_NUMBER_COUNT = 6;
     private static final String DELIMITER = ",";
@@ -26,9 +25,7 @@ public class InputConverter {
         String[] parts = input.split(DELIMITER);
         validateNumberCount(parts);
 
-        List<Integer> numbers = parseNumbers(parts);
-
-        return numbers;
+        return parseNumbers(parts);
     }
 
     private static void validateStringFormat(String input) {
@@ -50,7 +47,7 @@ public class InputConverter {
         List<Integer> numbers = new ArrayList<>();
         try {
             for (String part : parts) {
-                numbers.add(Integer.parseInt(part.trim()));
+                numbers.add(Integer.parseInt(part));
             }
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(ERROR_PREFIX + "당첨 번호는 유효한 숫자여야 합니다.");

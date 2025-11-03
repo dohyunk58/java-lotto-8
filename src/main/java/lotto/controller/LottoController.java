@@ -1,10 +1,6 @@
 package lotto.controller;
 
-import lotto.domain.Lotto;
-import lotto.domain.LottoGenerator;
-import lotto.domain.LottoRank;
-import lotto.domain.LottoResult;
-import lotto.domain.WinningLotto;
+import lotto.domain.*;
 import lotto.util.InputConverter;
 import lotto.view.InputView;
 import lotto.view.OutputView;
@@ -25,9 +21,9 @@ public class LottoController {
 
     public void run() {
         // 구매 금액 입력
-        int purchaseAmount = getPurchaseAmountWithRetry();
+        PurchaseAmount purchaseAmount = getPurchaseAmountRetry();
         // 구매 금액에 따라 로또 발행 및 출력
-        int lottoCount = purchaseAmount / 1000;
+        int lottoCount = purchaseAmount.getLottoCount();
         outputView.printPurchaseCount(lottoCount);
         List<Lotto> lottos = lottoGenerator.generateLottos(lottoCount);
         outputView.printLottos(lottos);
@@ -37,44 +33,65 @@ public class LottoController {
         LottoResult lottoResult = calculateResults(lottos, winningLotto);
 
         outputView.printStatistics(lottoResult);
-        outputView.printProfitRate(lottoResult.calculateProfitRate(purchaseAmount));
+        outputView.printProfitRate(lottoResult.calculateProfitRate(purchaseAmount.getAmount()));
     }
 
-    private int getPurchaseAmountWithRetry() {
-        while (true) {
-            try {
-                String input = inputView.readPurchaseAmount();
-                return InputConverter.parsePurchaseAmount(input);
-            } catch (IllegalArgumentException e) {
-                outputView.printError(e.getMessage());
-            }
+    private PurchaseAmount getPurchaseAmountRetry() {
+        PurchaseAmount purchaseAmount = null;
+        while (purchaseAmount == null) {
+            purchaseAmount = processPurchaseAmount();
+        }
+        return purchaseAmount;
+    }
+
+    private PurchaseAmount processPurchaseAmount() {
+        try {
+            String input = inputView.readPurchaseAmount();
+            int parsedAmount = InputConverter.parsePurchaseAmount(input);
+            return new PurchaseAmount(parsedAmount);
+        } catch (IllegalArgumentException e) {
+            outputView.printError(e.getMessage());
+            return null;
+        }
+    }
+
+    private Lotto getWinningNumbersRetry() {
+        Lotto winningNumbers = null;
+        while (winningNumbers == null) {
+            winningNumbers = processWinningNumbers();
+        }
+        return winningNumbers;
+    }
+
+    private Lotto processWinningNumbers() {
+        try {
+            String input = inputView.readWinningNumbers();
+            List<Integer> numbers = InputConverter.parseWinningNumbers(input);
+            return new Lotto(numbers);
+        } catch (IllegalArgumentException e) {
+            outputView.printError(e.getMessage());
+            return null;
         }
     }
 
     private WinningLotto getWinningLottoRetry() {
-        Lotto winningNumbers = getWinningNumbersRetry(); // 당첨 번호 입력
+        Lotto winningNumbers = getWinningNumbersRetry();
 
-        while (true) {
-            try {
-                String input = inputView.readBounusNumber();
-                int bonusNumber = InputConverter.parseBonusNumber(input);
-                return new WinningLotto(winningNumbers, bonusNumber);
-            } catch (IllegalArgumentException e) {
-                outputView.printError(e.getMessage());
-            }
+        WinningLotto winningLotto = null;
+        while (winningLotto == null) {
+            winningLotto = processBonusNumber(winningNumbers);
         }
+        return winningLotto;
     }
 
-    // 당첨 번호 입력
-    private Lotto getWinningNumbersRetry() {
-        while (true) {
-            try {
-                String input = inputView.readWinningNumbers();
-                List<Integer> numbers = InputConverter.parseWinningNumbers(input);
-                return new Lotto(numbers);
-            } catch (IllegalArgumentException e) {
-                outputView.printError(e.getMessage());
-            }
+    private WinningLotto processBonusNumber(Lotto winningNumbers) {
+        try {
+            String input = inputView.readBonusNumber();
+            int bonusNumber = InputConverter.parseBonusNumber(input);
+            return new WinningLotto(winningNumbers, bonusNumber);
+        } catch (IllegalArgumentException e) {
+            outputView.printError(e.getMessage());
+            return null;
         }
     }
 

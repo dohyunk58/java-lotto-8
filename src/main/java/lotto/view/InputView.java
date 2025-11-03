@@ -13,7 +13,7 @@ public class InputView {
         return Console.readLine();
     }
 
-    public String readBounusNumber() {
+    public String readBonusNumber() {
         System.out.println("\n보너스 번호를 입력해 주세요.");
         return Console.readLine();
     }

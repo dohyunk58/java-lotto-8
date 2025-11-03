@@ -1,18 +1,30 @@
 package lotto.domain;
 
 public class WinningLotto {
+    private static final int MIN_LOTTO_NUMBER = 1;
+    private static final int MAX_LOTTO_NUMBER = 45;
+    private static final String ERROR_PREFIX = "[ERROR] ";
+
     private final Lotto winningNumbers;
     private final int bonusNumber;
 
     public WinningLotto(Lotto winningNumbers, int bonusNumber) {
-        validateBonusNumber(winningNumbers, bonusNumber);
+        validateRange(bonusNumber);
+        validateDuplicate(winningNumbers, bonusNumber);
+
         this.winningNumbers = winningNumbers;
         this.bonusNumber = bonusNumber;
     }
 
-    private void validateBonusNumber(Lotto winningNumbers, int bonusNumber) {
-        if(winningNumbers.contains(bonusNumber)) {
-            throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
+    private void validateRange(int bonusNumber) {
+        if (bonusNumber < MIN_LOTTO_NUMBER || bonusNumber > MAX_LOTTO_NUMBER) {
+            throw new IllegalArgumentException(ERROR_PREFIX + "로또 번호는 1부터 45 사이의 숫자여야 합니다.");
+        }
+    }
+
+    private void validateDuplicate(Lotto winningNumbers, int bonusNumber) {
+        if (winningNumbers.contains(bonusNumber)) {
+            throw new IllegalArgumentException(ERROR_PREFIX + "보너스 번호는 당첨 번호와 중복될 수 없습니다.");
         }
     }
 

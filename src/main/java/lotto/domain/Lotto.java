@@ -4,11 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static lotto.domain.LottoConfig.*;
+
 public class Lotto {
-    private static final int LOTTO_NUMBER_COUNT = 6;
-    private static final int MIN_LOTTO_NUMBER = 1;
-    private static final int MAX_LOTTO_NUMBER = 45;
-    private static final String ERROR_PREFIX = "[ERROR] ";
 
     private final List<Integer> numbers;
 
@@ -27,7 +25,7 @@ public class Lotto {
     }
 
     private void validateSize(List<Integer> numbers) {
-        if (numbers.size() != 6) {
+        if (numbers.size() != LOTTO_NUMBER_COUNT) {
             throw new IllegalArgumentException(ERROR_PREFIX + "로또 번호는 6개여야 합니다.");
         }
     }

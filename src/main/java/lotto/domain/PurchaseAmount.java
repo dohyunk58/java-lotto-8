@@ -1,8 +1,8 @@
 package lotto.domain;
 
+import static lotto.domain.LottoConfig.*;
+
 public class PurchaseAmount {
-    private static final int LOTTO_PRICE = 1000;
-    private static final String ERROR_PREFIX = "[ERROR] ";
 
     private final int amount;
 

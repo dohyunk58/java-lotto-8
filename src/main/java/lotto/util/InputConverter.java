@@ -2,13 +2,9 @@ package lotto.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import static lotto.domain.LottoConfig.*;
 
 public class InputConverter {
-
-    private static final String ERROR_PREFIX = "[ERROR] ";
-    private static final int LOTTO_NUMBER_COUNT = 6;
-    private static final String DELIMITER = ",";
-
     public static Integer parsePurchaseAmount(String input) {
         int amount;
         try {

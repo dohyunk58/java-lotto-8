@@ -1,9 +1,8 @@
 package lotto.domain;
 
+import static lotto.domain.LottoConfig.*;
+
 public class WinningLotto {
-    private static final int MIN_LOTTO_NUMBER = 1;
-    private static final int MAX_LOTTO_NUMBER = 45;
-    private static final String ERROR_PREFIX = "[ERROR] ";
 
     private final Lotto winningNumbers;
     private final int bonusNumber;
